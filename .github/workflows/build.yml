@@ -1,0 +1,54 @@
+name: Build and Release DMG
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install System Dependencies
+        run: |
+          brew install tor create-dmg
+
+      - name: Install Python Dependencies
+        run: |
+          pip install rumps py2app
+
+      - name: Build App Bundle
+        run: |
+          # Build the .app bundle
+          python setup.py py2app
+          
+      - name: Create DMG
+        run: |
+          # Package the .app into a .dmg
+          create-dmg 
+            --volname "Portable VPN Installer" 
+            --window-pos 200 120 
+            --window-size 600 300 
+            --icon-size 100 
+            --icon "PortableVPN.app" 175 120 
+            --hide-extension "PortableVPN.app" 
+            --app-drop-link 425 120 
+            "PortableVPN-${{ github.ref_name }}.dmg" 
+            "dist/PortableVPN.app"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: PortableVPN-${{ github.ref_name }}.dmg
+          name: Release ${{ github.ref_name }}
+          body: "New automated release of Portable VPN for macOS. Includes bundled Tor binary and menu bar toggle."
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
