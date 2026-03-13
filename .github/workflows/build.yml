@@ -27,21 +27,19 @@ jobs:
 
       - name: Build App Bundle
         run: |
-          # Build the .app bundle
           python setup.py py2app
           
       - name: Create DMG
         run: |
-          # Package the .app into a .dmg
-          create-dmg 
-            --volname "Portable VPN Installer" 
-            --window-pos 200 120 
-            --window-size 600 300 
-            --icon-size 100 
-            --icon "PortableVPN.app" 175 120 
-            --hide-extension "PortableVPN.app" 
-            --app-drop-link 425 120 
-            "PortableVPN-${{ github.ref_name }}.dmg" 
+          create-dmg \
+            --volname "Portable VPN Installer" \
+            --window-pos 200 120 \
+            --window-size 600 300 \
+            --icon-size 100 \
+            --icon "PortableVPN.app" 175 120 \
+            --hide-extension "PortableVPN.app" \
+            --app-drop-link 425 120 \
+            "PortableVPN-${{ github.ref_name }}.dmg" \
             "dist/PortableVPN.app"
 
       - name: Create GitHub Release
