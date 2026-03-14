@@ -4,3 +4,6 @@ dist/
 __pycache__/
 .DS_Store
 .portable_tor_data/
+venv/
+*.dmg
+rw.*.dmg

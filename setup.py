@@ -2,20 +2,18 @@ from setuptools import setup
 import os
 
 APP = ['portable_vpn.py']
-DATA_FILES = [
-    ('', ['/opt/homebrew/bin/tor']),
-]
+DATA_FILES = []
 OPTIONS = {
-    'argv_emulation': True,
+    'argv_emulation': False,
     'plist': {
         'LSUIElement': True,
         'CFBundleName': 'PortableVPN',
         'CFBundleDisplayName': 'Portable VPN',
         'CFBundleIdentifier': 'com.user.portablevpn',
-        'CFBundleVersion': '1.1.0',
-        'CFBundleShortVersionString': '1.1.0',
+        'CFBundleVersion': '1.3.0',
+        'CFBundleShortVersionString': '1.3.0',
     },
-    'packages': ['rumps'],
+    'packages': ['objc', 'AppKit', 'Foundation'],
 }
 
 setup(
